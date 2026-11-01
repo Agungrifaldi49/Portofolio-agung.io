@@ -4,7 +4,7 @@
 @section('header_title', 'Tulis Artikel Teknis')
 
 @section('content')
-<div class="max-w-4xl space-y-6">
+<div class="w-full space-y-6">
     <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
         <div>
             <h2 class="text-xl font-bold text-slate-900 dark:text-white">Form Artikel Baru</h2>

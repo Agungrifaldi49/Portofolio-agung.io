@@ -159,7 +159,52 @@
                     </div>
                 </div>
 
-                <!-- Card 4: Teknologi yang Digunakan -->
+            </div>
+
+            <!-- Right Column: Media, Tech Stack & Action (4 Columns) -->
+            <div class="lg:col-span-4 space-y-6">
+
+                <!-- Card 4: Gambar Sampul & Pengaturan Visibilitas -->
+                <div class="glass-card p-6 rounded-3xl space-y-4">
+                    <div class="flex items-center space-x-2.5 pb-2 border-b border-slate-100 dark:border-slate-800/80">
+                        <div class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center font-bold">
+                            <i data-lucide="image" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Sampul & Pengaturan</h3>
+                            <p class="text-[10px] text-slate-500">Screenshot index dan visibilitas.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">Gambar Sampul / Screenshot (Maks. 3MB)</label>
+                        <input type="file" name="cover_image" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 dark:file:bg-indigo-950 file:text-indigo-600 dark:file:text-indigo-400 cursor-pointer">
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">Atau URL Gambar Eksternal</label>
+                        <input type="url" name="cover_image_url" value="{{ old('cover_image_url') }}" placeholder="https://..." class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 text-slate-900 dark:text-white">
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">Urutan Tampilan (Angka kecil lebih awal)</label>
+                        <input type="number" name="sort_order" value="{{ old('sort_order', 0) }}" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 text-slate-900 dark:text-white">
+                    </div>
+
+                    <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <label class="flex items-center space-x-2 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
+                            <input type="checkbox" name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }} class="rounded text-indigo-600 focus:ring-indigo-500">
+                            <span>Tandai sebagai Proyek Unggulan</span>
+                        </label>
+
+                        <label class="flex items-center space-x-2 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
+                            <input type="checkbox" name="is_published" value="1" {{ old('is_published', '1') ? 'checked' : '' }} class="rounded text-indigo-600 focus:ring-indigo-500">
+                            <span>Publikasikan ke Website</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Card 5: Teknologi yang Digunakan -->
                 <div class="glass-card p-6 rounded-3xl space-y-4">
                     <div class="flex items-center space-x-2.5 pb-2 border-b border-slate-100 dark:border-slate-800/80">
                         <div class="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center font-bold">
@@ -186,41 +231,6 @@
                     </div>
                 </div>
 
-                <!-- Card 5: Gambar Sampul & Pengaturan Visibilitas -->
-                <div class="glass-card p-6 rounded-3xl space-y-4">
-                    <div class="flex items-center space-x-2.5 pb-2 border-b border-slate-100 dark:border-slate-800/80">
-                        <div class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center font-bold">
-                            <i data-lucide="image" class="w-4 h-4"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Sampul & Pengaturan</h3>
-                            <p class="text-[10px] text-slate-500">Screenshot index dan visibilitas.</p>
-                        </div>
-                    </div>
-
-                    <div class="space-y-1.5">
-                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">Gambar Sampul / Screenshot (Maks. 3MB)</label>
-                        <input type="file" name="cover_image" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 dark:file:bg-indigo-950 file:text-indigo-600 dark:file:text-indigo-400 cursor-pointer">
-                    </div>
-
-                    <div class="space-y-1.5">
-                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">Urutan Tampilan (Angka kecil lebih awal)</label>
-                        <input type="number" name="sort_order" value="{{ old('sort_order', 0) }}" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 text-slate-900 dark:text-white">
-                    </div>
-
-                    <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
-                        <label class="flex items-center space-x-2 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
-                            <input type="checkbox" name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }} class="rounded text-indigo-600 focus:ring-indigo-500">
-                            <span>Tandai sebagai Proyek Unggulan</span>
-                        </label>
-
-                        <label class="flex items-center space-x-2 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
-                            <input type="checkbox" name="is_published" value="1" {{ old('is_published', '1') ? 'checked' : '' }} class="rounded text-indigo-600 focus:ring-indigo-500">
-                            <span>Publikasikan ke Website</span>
-                        </label>
-                    </div>
-                </div>
-
                 <!-- Card 6: Tombol Simpan -->
                 <div class="glass-card p-6 rounded-3xl space-y-3">
                     <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold text-sm shadow-lg shadow-indigo-600/25 transition-all flex items-center justify-center space-x-2">
@@ -231,6 +241,8 @@
                         Batal
                     </a>
                 </div>
+
+            </div>
 
             </div>
 

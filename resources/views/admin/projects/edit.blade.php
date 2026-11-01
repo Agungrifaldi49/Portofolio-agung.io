@@ -171,35 +171,12 @@
                     </div>
                 </div>
 
-                <!-- Card 4: Teknologi & Stack -->
-                <div class="glass-card p-6 rounded-3xl space-y-4">
-                    <div class="flex items-center space-x-2.5 pb-2 border-b border-slate-100 dark:border-slate-800/80">
-                        <div class="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center font-bold">
-                            <i data-lucide="layers" class="w-4 h-4"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Teknologi & Stack</h3>
-                            <p class="text-[10px] text-slate-500">Centang teknologi yang diterapkan.</p>
-                        </div>
-                    </div>
+            </div>
 
-                    @php $selectedTechs = $project->technologies->pluck('id')->toArray(); @endphp
-                    <div class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
-                        @foreach($technologies as $tech)
-                            <label class="flex items-center space-x-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/60">
-                                <input type="checkbox" name="technologies[]" value="{{ $tech->id }}" {{ in_array($tech->id, $selectedTechs) ? 'checked' : '' }} class="rounded text-indigo-600 focus:ring-indigo-500">
-                                <span class="truncate">{{ $tech->name }}</span>
-                            </label>
-                        @endforeach
-                    </div>
+            <!-- Right Column: Media, Tech Stack & Action (4 Columns) -->
+            <div class="lg:col-span-4 space-y-6">
 
-                    <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
-                        <label class="block text-[11px] text-slate-400 mb-1">Tambah stack baru (pisahkan koma):</label>
-                        <input type="text" name="new_technologies" placeholder="cth. Inertia.js, Redis" class="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 text-slate-900 dark:text-white">
-                    </div>
-                </div>
-
-                <!-- Card 5: Gambar Sampul / Screenshot Index -->
+                <!-- Card 4: Gambar Sampul / Screenshot Index -->
                 <div class="glass-card p-6 rounded-3xl space-y-4">
                     <div class="flex items-center space-x-2.5 pb-2 border-b border-slate-100 dark:border-slate-800/80">
                         <div class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center font-bold">
@@ -253,6 +230,34 @@
                     </div>
                 </div>
 
+                <!-- Card 5: Teknologi & Stack -->
+                <div class="glass-card p-6 rounded-3xl space-y-4">
+                    <div class="flex items-center space-x-2.5 pb-2 border-b border-slate-100 dark:border-slate-800/80">
+                        <div class="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center font-bold">
+                            <i data-lucide="layers" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Teknologi & Stack</h3>
+                            <p class="text-[10px] text-slate-500">Centang teknologi yang diterapkan.</p>
+                        </div>
+                    </div>
+
+                    @php $selectedTechs = $project->technologies->pluck('id')->toArray(); @endphp
+                    <div class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
+                        @foreach($technologies as $tech)
+                            <label class="flex items-center space-x-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/60">
+                                <input type="checkbox" name="technologies[]" value="{{ $tech->id }}" {{ in_array($tech->id, $selectedTechs) ? 'checked' : '' }} class="rounded text-indigo-600 focus:ring-indigo-500">
+                                <span class="truncate">{{ $tech->name }}</span>
+                            </label>
+                        @endforeach
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <label class="block text-[11px] text-slate-400 mb-1">Tambah stack baru (pisahkan koma):</label>
+                        <input type="text" name="new_technologies" placeholder="cth. Inertia.js, Redis" class="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 text-slate-900 dark:text-white">
+                    </div>
+                </div>
+
                 <!-- Card 6: Aksi Simpan -->
                 <div class="glass-card p-6 rounded-3xl space-y-3">
                     <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold text-sm shadow-lg shadow-indigo-600/25 transition-all flex items-center justify-center space-x-2">
@@ -263,6 +268,8 @@
                         Batal
                     </a>
                 </div>
+
+            </div>
 
             </div>
 

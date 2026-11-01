@@ -4,7 +4,7 @@
 @section('header_title', 'Tambah Keahlian Baru')
 
 @section('content')
-<div class="w-full max-w-4xl mx-auto space-y-6">
+<div class="w-full space-y-6">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200/80 dark:border-slate-800/80">
         <div>

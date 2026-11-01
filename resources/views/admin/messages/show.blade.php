@@ -4,7 +4,7 @@
 @section('header_title', 'Detail Pesan Masuk')
 
 @section('content')
-<div class="max-w-3xl space-y-6">
+<div class="w-full space-y-6">
     <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
         <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
             <div>
