@@ -40,6 +40,14 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             RateLimiter::clear($throttleKey);
             $request->session()->regenerate();
+
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            $user->update([
+                'last_login_at' => now(),
+                'last_login_ip' => $request->ip(),
+            ]);
+
             return redirect()->intended(route('admin.dashboard'));
         }
 

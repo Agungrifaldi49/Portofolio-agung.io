@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\ContactMessageController as AdminMessageController;
 use App\Http\Controllers\Admin\GitHubController as AdminGitHubController;
 use App\Http\Controllers\Admin\SiteSettingController as AdminSiteSettingController;
+use App\Http\Controllers\Admin\AccountController as AdminAccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,5 +114,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Website Settings
         Route::get('/settings', [AdminSiteSettingController::class, 'index'])->name('settings.index');
         Route::put('/settings', [AdminSiteSettingController::class, 'update'])->name('settings.update');
+
+        // Administrator Account & Security Settings
+        Route::get('/account', [AdminAccountController::class, 'edit'])->name('account.edit');
+        Route::put('/account/profile', [AdminAccountController::class, 'updateProfile'])->name('account.profile.update');
+        Route::put('/account/password', [AdminAccountController::class, 'updatePassword'])->name('account.password.update');
     });
 });

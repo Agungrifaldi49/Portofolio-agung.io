@@ -114,6 +114,11 @@
                     <i data-lucide="settings" class="w-4 h-4"></i>
                     <span>Pengaturan Website</span>
                 </a>
+
+                <a href="{{ route('admin.account.edit') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl transition-colors {{ request()->routeIs('admin.account.*') ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white' }}">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    <span>Akun & Keamanan</span>
+                </a>
             </nav>
         </div>
 
@@ -165,14 +170,14 @@
                 </button>
 
                 <!-- Admin user badge -->
-                <div class="flex items-center space-x-2.5 pl-3 border-l border-slate-200 dark:border-slate-800 text-xs">
-                    <div class="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold">
+                <a href="{{ route('admin.account.edit') }}" class="flex items-center space-x-2.5 pl-3 border-l border-slate-200 dark:border-slate-800 text-xs hover:opacity-85 transition-opacity group" title="Pengaturan Akun Administrator">
+                    <div class="w-7 h-7 rounded-lg bg-indigo-600 group-hover:bg-indigo-500 text-white flex items-center justify-center font-bold transition-colors">
                         {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
                     </div>
-                    <span class="font-medium text-slate-700 dark:text-slate-300 hidden sm:inline">
+                    <span class="font-medium text-slate-700 dark:text-slate-300 hidden sm:inline group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                         {{ auth()->user()->name ?? 'Admin' }}
                     </span>
-                </div>
+                </a>
             </div>
         </header>
 
