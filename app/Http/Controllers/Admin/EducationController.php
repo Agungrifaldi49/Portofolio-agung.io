@@ -34,9 +34,9 @@ class EducationController extends Controller
         Education::create([
             'degree' => $validated['degree'],
             'institution' => $validated['institution'],
-            'field_of_study' => $validated['field_of_study'],
+            'field_of_study' => $validated['field_of_study'] ?? null,
             'period' => $validated['period'],
-            'description' => $validated['description'],
+            'description' => $validated['description'] ?? null,
             'sort_order' => (int) ($validated['sort_order'] ?? 0),
             'is_published' => $request->boolean('is_published', true),
         ]);
@@ -64,9 +64,9 @@ class EducationController extends Controller
         $education->update([
             'degree' => $validated['degree'],
             'institution' => $validated['institution'],
-            'field_of_study' => $validated['field_of_study'],
+            'field_of_study' => $validated['field_of_study'] ?? null,
             'period' => $validated['period'],
-            'description' => $validated['description'],
+            'description' => $validated['description'] ?? null,
             'sort_order' => (int) ($validated['sort_order'] ?? 0),
             'is_published' => $request->boolean('is_published'),
         ]);

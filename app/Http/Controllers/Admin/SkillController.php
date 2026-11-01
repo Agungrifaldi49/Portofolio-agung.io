@@ -42,8 +42,8 @@ class SkillController extends Controller
             'name' => $validated['name'],
             'category' => $validated['category'],
             'icon' => $validated['icon'] ?? 'code',
-            'level_label' => $validated['level_label'],
-            'description' => $validated['description'],
+            'level_label' => $validated['level_label'] ?? null,
+            'description' => $validated['description'] ?? null,
             'sort_order' => (int) ($validated['sort_order'] ?? 0),
             'is_published' => $request->boolean('is_published', true),
         ]);
@@ -79,8 +79,8 @@ class SkillController extends Controller
             'name' => $validated['name'],
             'category' => $validated['category'],
             'icon' => $validated['icon'] ?? 'code',
-            'level_label' => $validated['level_label'],
-            'description' => $validated['description'],
+            'level_label' => $validated['level_label'] ?? null,
+            'description' => $validated['description'] ?? null,
             'sort_order' => (int) ($validated['sort_order'] ?? 0),
             'is_published' => $request->boolean('is_published'),
         ]);

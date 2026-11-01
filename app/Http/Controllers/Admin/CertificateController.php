@@ -39,11 +39,11 @@ class CertificateController extends Controller
         $cert->fill([
             'title' => $validated['title'],
             'issuer' => $validated['issuer'],
-            'issue_date' => $validated['issue_date'],
-            'credential_id' => $validated['credential_id'],
-            'credential_url' => $validated['credential_url'],
+            'issue_date' => $validated['issue_date'] ?? null,
+            'credential_id' => $validated['credential_id'] ?? null,
+            'credential_url' => $validated['credential_url'] ?? null,
             'category' => $validated['category'],
-            'description' => $validated['description'],
+            'description' => $validated['description'] ?? null,
             'sort_order' => (int) ($validated['sort_order'] ?? 0),
             'is_published' => $request->boolean('is_published', true),
         ]);
@@ -87,11 +87,11 @@ class CertificateController extends Controller
         $certificate->update([
             'title' => $validated['title'],
             'issuer' => $validated['issuer'],
-            'issue_date' => $validated['issue_date'],
-            'credential_id' => $validated['credential_id'],
-            'credential_url' => $validated['credential_url'],
+            'issue_date' => $validated['issue_date'] ?? null,
+            'credential_id' => $validated['credential_id'] ?? null,
+            'credential_url' => $validated['credential_url'] ?? null,
             'category' => $validated['category'],
-            'description' => $validated['description'],
+            'description' => $validated['description'] ?? null,
             'sort_order' => (int) ($validated['sort_order'] ?? 0),
             'is_published' => $request->boolean('is_published'),
         ]);

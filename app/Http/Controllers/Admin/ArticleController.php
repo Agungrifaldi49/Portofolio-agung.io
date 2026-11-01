@@ -57,12 +57,12 @@ class ArticleController extends Controller
         $article->fill([
             'title' => $validated['title'],
             'category_id' => $validated['category_id'] ?? null,
-            'excerpt' => $validated['excerpt'],
+            'excerpt' => $validated['excerpt'] ?? null,
             'content' => $validated['content'],
             'status' => $validated['status'],
             'published_at' => $validated['status'] === 'published' ? now() : null,
-            'meta_description' => $validated['meta_description'],
-            'meta_keywords' => $validated['meta_keywords'],
+            'meta_description' => $validated['meta_description'] ?? null,
+            'meta_keywords' => $validated['meta_keywords'] ?? null,
         ]);
 
         if ($request->hasFile('cover_image')) {
@@ -127,11 +127,11 @@ class ArticleController extends Controller
         $article->fill([
             'title' => $validated['title'],
             'category_id' => $validated['category_id'] ?? null,
-            'excerpt' => $validated['excerpt'],
+            'excerpt' => $validated['excerpt'] ?? null,
             'content' => $validated['content'],
             'status' => $validated['status'],
-            'meta_description' => $validated['meta_description'],
-            'meta_keywords' => $validated['meta_keywords'],
+            'meta_description' => $validated['meta_description'] ?? null,
+            'meta_keywords' => $validated['meta_keywords'] ?? null,
         ]);
 
         $article->save();
