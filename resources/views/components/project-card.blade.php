@@ -7,21 +7,22 @@
         : ($project->github_full_name ? 'github.com/' . $project->github_full_name : Str::slug($project->title) . '.app');
 @endphp
 
-<article class="glass-card rounded-2xl overflow-hidden flex flex-col group hover:border-indigo-500/50 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-300">
+<article class="glass-card card-border-glow rounded-2xl overflow-hidden flex flex-col group hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/15 transition-all duration-500 relative">
     <!-- Window / Index Browser Header & Cover Preview -->
     <div class="relative w-full overflow-hidden bg-slate-950 border-b border-slate-200/60 dark:border-slate-800/80 flex flex-col">
         
         <!-- Simulated Browser / App Window Topbar -->
         <div class="px-3.5 py-2.5 bg-slate-900/90 border-b border-slate-800/80 flex items-center justify-between text-xs select-none z-10">
-            <!-- Window controls -->
+            <!-- Window controls with interactive hover glow -->
             <div class="flex items-center space-x-1.5">
-                <span class="w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block"></span>
-                <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block"></span>
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500/80 group-hover:bg-rose-500 group-hover:shadow-[0_0_6px_#f43f5e] transition-all inline-block"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80 group-hover:bg-amber-500 group-hover:shadow-[0_0_6px_#f59e0b] transition-all inline-block"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80 group-hover:bg-emerald-500 group-hover:shadow-[0_0_6px_#10b981] transition-all inline-block"></span>
             </div>
 
-            <!-- Simulated Address Bar (Index Page URL) -->
-            <div class="flex items-center space-x-1.5 px-3 py-0.5 rounded-md bg-slate-950/70 border border-slate-800 text-[11px] font-mono text-slate-400 max-w-[200px] sm:max-w-[240px] truncate">
+            <!-- Simulated Address Bar (Index Page URL) with live pulsating indicator -->
+            <div class="flex items-center space-x-1.5 px-3 py-0.5 rounded-md bg-slate-950/70 border border-slate-800 text-[11px] font-mono text-slate-400 max-w-[200px] sm:max-w-[240px] truncate group-hover:border-indigo-500/40 transition-colors">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0"></span>
                 <i data-lucide="lock" class="w-3 h-3 text-emerald-400 flex-shrink-0"></i>
                 <span class="truncate">{{ $displayDomain }}</span>
             </div>
@@ -44,11 +45,11 @@
         <!-- Viewport Area: Image or Simulated Web App Index Screen -->
         <div class="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-950">
             @if($coverUrl)
-                <!-- Real Screenshot / OpenGraph Banner -->
+                <!-- Real Screenshot / OpenGraph Banner with Smooth Zoom -->
                 <img 
                     src="{{ $coverUrl }}" 
                     alt="{{ $project->title }}" 
-                    class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                    class="w-full h-full object-cover object-top group-hover:scale-105 group-hover:brightness-105 transition-all duration-700 ease-out"
                     loading="lazy"
                     onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');"
                 >

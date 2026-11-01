@@ -34,11 +34,15 @@
     @stack('styles')
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-[#0b0f19] dark:text-slate-100 flex flex-col min-h-screen selection:bg-indigo-500 selection:text-white">
-    <!-- Subtle Background Glows (Accessible & Non-distracting) -->
+    <!-- Dynamic Animated Background Glows & Tech Grid -->
     <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden" aria-hidden="true">
-        <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-tr from-indigo-600/15 via-purple-600/10 to-cyan-500/10 blur-[120px] rounded-full dark:opacity-60 opacity-30"></div>
-        <div class="absolute top-[45%] -right-40 w-[500px] h-[350px] bg-purple-600/10 blur-[130px] rounded-full dark:opacity-40 opacity-20"></div>
-        <div class="absolute -bottom-40 -left-40 w-[500px] h-[350px] bg-indigo-600/10 blur-[130px] rounded-full dark:opacity-40 opacity-20"></div>
+        <!-- Developer Subtle Dot Grid Pattern with Center Mask -->
+        <div class="absolute inset-0 bg-grid-tech [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000_65%,transparent_100%)] opacity-80"></div>
+        
+        <!-- Animated Aurora Glow Blobs -->
+        <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[750px] h-[450px] bg-gradient-to-tr from-indigo-600/25 via-purple-600/20 to-cyan-500/20 blur-[130px] rounded-full animate-aurora dark:opacity-70 opacity-40"></div>
+        <div class="absolute top-[35%] -right-40 w-[600px] h-[450px] bg-gradient-to-br from-purple-600/20 to-pink-600/15 blur-[140px] rounded-full animate-float-2 dark:opacity-50 opacity-30"></div>
+        <div class="absolute -bottom-40 -left-40 w-[600px] h-[450px] bg-gradient-to-tr from-indigo-600/20 to-cyan-600/15 blur-[140px] rounded-full animate-float-1 dark:opacity-50 opacity-30"></div>
     </div>
 
     <!-- Navigation Header -->

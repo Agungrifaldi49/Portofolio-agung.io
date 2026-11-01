@@ -52,3 +52,4 @@ class CaptureProjectScreenshots extends Command
         return Command::SUCCESS;
     }
 }
+

@@ -153,3 +153,4 @@ capture().then(() => {
     console.error("Capture failed:", err);
     process.exit(1);
 });
+

@@ -12,9 +12,13 @@
             <!-- Left Column: Copy & CTAs -->
             <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
                 <!-- Status Badge -->
+                <!-- Status Badge with Radar Ping -->
                 @if($profile->available_for_hire)
-                    <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold backdrop-blur-md shadow-sm">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
                         <span>{{ $profile->hero_badge ?: 'Available for High-Impact Projects' }}</span>
                     </div>
                 @endif
@@ -22,7 +26,7 @@
                 <!-- Main Heading & Dynamic Role Typing -->
                 <div class="space-y-2">
                     <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
-                        Hi, I'm <span class="text-gradient">{{ $profile->full_name }}</span>
+                        Hi, I'm <span class="text-gradient animate-text-shimmer">{{ $profile->full_name }}</span>
                     </h1>
                     
                     <!-- Alpine.js Dynamic Role Switcher -->
@@ -94,47 +98,106 @@
                 </div>
             </div>
 
-            <!-- Right Column: Avatar / Visual Identity Card -->
-            <div class="lg:col-span-5 flex justify-center">
-                <div class="relative w-72 sm:w-80 aspect-square">
-                    <!-- Ambient Glow Behind -->
-                    <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-3xl blur-2xl opacity-30 dark:opacity-40 animate-pulse"></div>
+            <!-- Right Column: Avatar with Animated Concentric Orbitals & Floating Tech Badges -->
+            <div class="lg:col-span-5 flex justify-center items-center py-6">
+                <div class="relative w-80 sm:w-96 aspect-square flex items-center justify-center">
                     
-                    <div class="relative w-full h-full rounded-3xl glass-card overflow-hidden p-3 shadow-2xl border border-white/20 dark:border-white/10 flex flex-col justify-between">
-                        @if($profile->avatar_path)
-                            <img 
-                                src="{{ asset('storage/' . $profile->avatar_path) }}" 
-                                alt="{{ $profile->full_name }}" 
-                                class="w-full h-full object-cover rounded-2xl"
-                            >
-                        @else
-                            <!-- Sleek Tech Graphic Card if no avatar uploaded -->
-                            <div class="w-full h-full rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 p-6 flex flex-col justify-between font-mono text-xs text-slate-300">
-                                <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                                    <div class="flex items-center space-x-2">
-                                        <span class="w-3 h-3 rounded-full bg-rose-500"></span>
-                                        <span class="w-3 h-3 rounded-full bg-amber-500"></span>
-                                        <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-                                    </div>
-                                    <span class="text-indigo-400">architect.php</span>
-                                </div>
-                                <div class="space-y-2 py-4">
-                                    <p class="text-emerald-400">&lt;?php</p>
-                                    <p class="text-slate-400">class <span class="text-amber-300">SeniorDeveloper</span> {</p>
-                                    <p class="pl-4 text-slate-300">public string $focus = '<span class="text-cyan-300">Scalable Systems</span>';</p>
-                                    <p class="pl-4 text-slate-300">public array $stack = [<span class="text-purple-300">'Laravel', 'MySQL', 'API'</span>];</p>
-                                    <p class="text-slate-400">}</p>
-                                </div>
-                                <div class="pt-3 border-t border-slate-800 text-[11px] text-slate-500 flex items-center justify-between">
-                                    <span>// Production Ready</span>
-                                    <span class="text-emerald-400 flex items-center space-x-1">
-                                        <i data-lucide="shield-check" class="w-3 h-3"></i>
-                                        <span>Secured</span>
-                                    </span>
-                                </div>
-                            </div>
-                        @endif
+                    <!-- Ambient Breathing Glow Aura Behind -->
+                    <div class="absolute inset-4 bg-gradient-to-tr from-indigo-600/40 via-purple-600/35 to-cyan-400/30 rounded-full blur-3xl animate-pulse-aura -z-10"></div>
+                    
+                    <!-- 1. Outer Orbit Ring (Counter-Clockwise Dashed Track with Moving Planet Dots) -->
+                    <div class="absolute inset-0 rounded-full border border-dashed border-indigo-500/25 dark:border-indigo-400/25 animate-spin-reverse pointer-events-none">
+                        <!-- Orbiting Planet Dot 1 -->
+                        <div class="absolute top-4 left-1/4 w-3.5 h-3.5 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 shadow-[0_0_12px_#38bdf8]"></div>
+                        <!-- Orbiting Planet Dot 2 -->
+                        <div class="absolute bottom-6 right-1/4 w-2.5 h-2.5 rounded-full bg-indigo-400 shadow-[0_0_8px_#818cf8]"></div>
                     </div>
+
+                    <!-- 2. Mid Orbital Ring (Clockwise Continuous Orbit with Radiant Glowing Comet) -->
+                    <div class="absolute inset-5 sm:inset-6 rounded-full border border-indigo-500/40 dark:border-indigo-400/30 animate-spin-slow pointer-events-none">
+                        <!-- Orbiting Glowing Comet Particle -->
+                        <div class="absolute -top-1.5 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 shadow-[0_0_16px_#c084fc] ring-2 ring-purple-300/60"></div>
+                        <!-- Secondary Mini Orbiting Particle -->
+                        <div class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_12px_#22d3ee]"></div>
+                    </div>
+
+                    <!-- 3. Inner Concentric Pulsing Rim (Conic Gradient Ring) -->
+                    <div class="absolute inset-10 sm:inset-12 rounded-full p-[2px] bg-gradient-to-tr from-indigo-500 via-transparent to-cyan-400 animate-spin-slow opacity-80 pointer-events-none"></div>
+
+                    <!-- 4. Floating Satellite Badges (Smooth 3D Floating) -->
+                    <!-- Top-Right Satellite Badge: Role -->
+                    <div class="absolute -top-1 -right-2 sm:right-2 z-20 animate-float-1">
+                        <div class="px-3.5 py-2 rounded-2xl glass-card border border-white/20 dark:border-white/10 shadow-xl shadow-indigo-500/10 flex items-center space-x-2 text-xs font-semibold backdrop-blur-xl">
+                            <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+                                <i data-lucide="code-2" class="w-3.5 h-3.5"></i>
+                            </span>
+                            <span class="text-slate-900 dark:text-white">Full-Stack Architect</span>
+                        </div>
+                    </div>
+
+                    <!-- Bottom-Left Satellite Badge: Status Available -->
+                    <div class="absolute -bottom-2 -left-2 sm:left-2 z-20 animate-float-2">
+                        <div class="px-3.5 py-2 rounded-2xl glass-card border border-white/20 dark:border-white/10 shadow-xl shadow-purple-500/10 flex items-center space-x-2 text-xs font-semibold backdrop-blur-xl">
+                            <span class="relative flex h-2.5 w-2.5">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                            </span>
+                            <span class="text-slate-900 dark:text-white">Laravel & PHP Expert</span>
+                        </div>
+                    </div>
+
+                    <!-- Left Floating Tech Orb: MySQL / DB -->
+                    <div class="absolute top-1/4 -left-3 sm:-left-4 z-10 animate-float-3">
+                        <div class="w-9 h-9 rounded-xl glass-card border border-indigo-500/30 flex items-center justify-center shadow-lg text-indigo-400 shadow-indigo-500/20" title="Database Architecture">
+                            <i data-lucide="database" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+
+                    <!-- Right Floating Tech Orb: Cloud / API -->
+                    <div class="absolute bottom-1/4 -right-3 sm:-right-4 z-10 animate-float-1">
+                        <div class="w-9 h-9 rounded-xl glass-card border border-purple-500/30 flex items-center justify-center shadow-lg text-purple-400 shadow-purple-500/20" title="REST API & Architecture">
+                            <i data-lucide="layers" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+
+                    <!-- 5. Central Profile Photo Card with Gradient Border -->
+                    <div class="relative w-52 sm:w-60 aspect-square rounded-full sm:rounded-[2.5rem] p-1.5 bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-400 shadow-2xl shadow-indigo-500/25 group overflow-hidden">
+                        <div class="w-full h-full rounded-full sm:rounded-[2.2rem] overflow-hidden bg-slate-950 relative">
+                            @if($profile->avatar_path)
+                                <img 
+                                    src="{{ asset('storage/' . $profile->avatar_path) }}" 
+                                    alt="{{ $profile->full_name }}" 
+                                    class="w-full h-full object-cover rounded-full sm:rounded-[2.2rem] group-hover:scale-110 transition-transform duration-700 ease-out"
+                                >
+                            @else
+                                <!-- High-Tech Graphic Card if no avatar -->
+                                <div class="w-full h-full bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 p-5 flex flex-col justify-between font-mono text-xs text-slate-300">
+                                    <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                                        <div class="flex items-center space-x-1.5">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                        </div>
+                                        <span class="text-indigo-400 text-[10px]">dev.php</span>
+                                    </div>
+                                    <div class="space-y-1.5 text-[11px]">
+                                        <p class="text-emerald-400">&lt;?php</p>
+                                        <p class="text-slate-300"><span class="text-cyan-300">class</span> <span class="text-amber-300">Developer</span> {</p>
+                                        <p class="pl-3 text-slate-400">role: '<span class="text-purple-300">Senior Full-Stack</span>'</p>
+                                        <p class="text-slate-300">}</p>
+                                    </div>
+                                    <div class="pt-2 border-t border-slate-800 text-[10px] text-emerald-400 flex items-center justify-between">
+                                        <span>// Ready</span>
+                                        <i data-lucide="shield-check" class="w-3 h-3"></i>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <!-- Subtle Interactive Sheen Layer on Hover -->
+                            <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500/15 via-transparent to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
