@@ -60,8 +60,8 @@
             </div>
 
             <div class="flex items-center space-x-4 font-mono text-slate-500">
-                @if(isset($connectionTest['rate_limit_remaining']))
-                    <span>Sisa Kuota API: <strong>{{ $connectionTest['rate_limit_remaining'] }}</strong> / {{ $connectionTest['rate_limit_limit'] }}</span>
+                @if(isset($connectionTest['rate_limit_remaining']) && $connectionTest['rate_limit_remaining'] !== null)
+                    <span>Sisa Kuota API: <strong>{{ $connectionTest['rate_limit_remaining'] }}</strong> / {{ $connectionTest['rate_limit_limit'] ?? 60 }}</span>
                 @endif
                 @if($lastSynced)
                     <span>Terakhir Sync: <strong>{{ date('d M H:i', strtotime($lastSynced)) }}</strong></span>

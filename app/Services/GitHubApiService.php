@@ -51,6 +51,8 @@ class GitHubApiService
             return [
                 'success' => false,
                 'message' => 'Username GitHub belum dikonfigurasi.',
+                'rate_limit_remaining' => null,
+                'rate_limit_limit' => null,
                 'data' => null,
             ];
         }
@@ -60,13 +62,19 @@ class GitHubApiService
                 ->timeout(10)
                 ->get("{$this->baseUrl}/users/{$targetUser}");
 
+            $limitHeader = $response->header('x-ratelimit-limit');
+            $remainingHeader = $response->header('x-ratelimit-remaining');
+
+            $rateLimitLimit = $limitHeader !== null ? (int) $limitHeader : 60;
+            $rateLimitRemaining = $remainingHeader !== null ? (int) $remainingHeader : null;
+
             if ($response->successful()) {
                 $user = $response->json();
                 return [
                     'success' => true,
                     'message' => 'Terhubung ke GitHub API.',
-                    'rate_limit_remaining' => (int) $response->header('x-ratelimit-remaining'),
-                    'rate_limit_limit' => (int) $response->header('x-ratelimit-limit'),
+                    'rate_limit_remaining' => $rateLimitRemaining ?? 60,
+                    'rate_limit_limit' => $rateLimitLimit,
                     'data' => [
                         'login' => $user['login'] ?? $targetUser,
                         'name' => $user['name'] ?? $targetUser,
@@ -83,6 +91,7 @@ class GitHubApiService
                     'success' => false,
                     'message' => 'GitHub API Rate Limit tercapai. Tambahkan GITHUB_TOKEN di .env untuk kuota 5,000 req/jam.',
                     'rate_limit_remaining' => 0,
+                    'rate_limit_limit' => $rateLimitLimit,
                     'data' => null,
                 ];
             }
@@ -90,6 +99,8 @@ class GitHubApiService
             return [
                 'success' => false,
                 'message' => 'GitHub API HTTP ' . $response->status() . ': ' . ($response->json('message') ?? 'User tidak ditemukan'),
+                'rate_limit_remaining' => $rateLimitRemaining,
+                'rate_limit_limit' => $rateLimitLimit,
                 'data' => null,
             ];
         } catch (\Exception $e) {
@@ -97,6 +108,8 @@ class GitHubApiService
             return [
                 'success' => false,
                 'message' => 'Koneksi ke GitHub API gagal: ' . $e->getMessage(),
+                'rate_limit_remaining' => null,
+                'rate_limit_limit' => null,
                 'data' => null,
             ];
         }
