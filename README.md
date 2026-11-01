@@ -254,3 +254,4 @@ php artisan test
 ## 10. Lisensi & Hak Cipta
 
 Proyek ini dibangun di bawah lisensi [MIT](LICENSE). Didesain dan dikembangkan secara modular untuk kebutuhan portofolio profesional developer modern.
+"# Portofolio-agung.io" 
