@@ -34,6 +34,11 @@
     @stack('styles')
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-[#0b0f19] dark:text-slate-100 flex flex-col min-h-screen selection:bg-indigo-500 selection:text-white">
+    <!-- Reading Progress Bar -->
+    <div 
+        class="fixed top-0 left-0 h-[2.5px] bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400 z-[100] transition-all duration-150 pointer-events-none"
+        :style="'width: ' + $store.scrollProgress.percent + '%'"
+    ></div>
     <!-- Dynamic Animated Background Glows & Tech Grid -->
     <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden" aria-hidden="true">
         <!-- Developer Subtle Dot Grid Pattern with Center Mask -->
@@ -79,6 +84,29 @@
     <main class="flex-grow">
         @yield('content')
     </main>
+
+    <!-- Floating Back to Top Button -->
+    <div 
+        x-show="$store.scrollProgress.visible" 
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 translate-y-6 scale-90"
+        x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+        x-transition:leave-end="opacity-0 translate-y-6 scale-90"
+        class="fixed bottom-6 right-6 z-40"
+        style="display: none;"
+    >
+        <button 
+            type="button" 
+            @click="$store.scrollProgress.scrollToTop()"
+            class="group p-3 rounded-2xl glass-card border border-slate-200 dark:border-slate-800 shadow-xl shadow-indigo-500/10 hover:shadow-indigo-500/25 hover:border-indigo-500 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:-translate-y-1 transition-all duration-300 flex items-center space-x-2"
+            aria-label="Kembali ke atas"
+        >
+            <i data-lucide="chevron-up" class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"></i>
+            <span class="text-xs font-mono font-bold" x-text="$store.scrollProgress.percent + '%'"></span>
+        </button>
+    </div>
 
     <!-- Professional Footer -->
     @include('components.footer')

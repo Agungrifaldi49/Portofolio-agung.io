@@ -29,23 +29,13 @@
                         Hi, I'm <span class="text-gradient animate-text-shimmer">{{ $profile->full_name }}</span>
                     </h1>
                     
-                    <!-- Alpine.js Dynamic Role Switcher -->
+                    <!-- Alpine.js Smooth Typewriter Role Switcher -->
                     <div 
-                        x-data="{ 
-                            titles: {{ json_encode($profile->hero_titles ?: ['Full-Stack Developer', 'Laravel Architect', 'Database Engineer']) }},
-                            currentIndex: 0,
-                            timer: null,
-                            start() {
-                                this.timer = setInterval(() => {
-                                    this.currentIndex = (this.currentIndex + 1) % this.titles.length;
-                                }, 3000);
-                            }
-                        }" 
-                        x-init="start()"
+                        x-data="typewriter({{ json_encode($profile->hero_titles ?: ['Full-Stack Developer', 'Laravel Architect', 'Database Engineer', 'API Specialist']) }}, 70, 35, 2000)"
                         class="text-xl sm:text-2xl font-mono text-indigo-600 dark:text-indigo-400 font-semibold h-8 flex items-center justify-center lg:justify-start"
                     >
-                        <span>&gt;&nbsp;</span>
-                        <span x-text="titles[currentIndex]" class="border-r-2 border-indigo-500 pr-1 animate-pulse"></span>
+                        <span class="text-slate-400 dark:text-slate-500 mr-2 select-none font-bold">&gt;</span>
+                        <span x-text="displayText" class="border-r-2 border-indigo-500 pr-1 animate-pulse"></span>
                     </div>
                 </div>
 
@@ -72,6 +62,33 @@
                             <span>CV (PDF)</span>
                         </a>
                     @endif
+                </div>
+
+                <!-- Interactive Quick Connect Terminal Pill -->
+                <div class="pt-1 flex items-center justify-center lg:justify-start">
+                    <div 
+                        x-data="clipboard()" 
+                        class="inline-flex items-center space-x-2.5 px-3.5 py-2 rounded-xl bg-slate-900/90 dark:bg-slate-950/90 border border-slate-800 text-xs font-mono text-slate-300 shadow-md group hover:border-indigo-500/50 transition-colors"
+                    >
+                        <span class="text-emerald-400 font-bold">$</span>
+                        <span class="text-slate-300 select-all">npx {{ Str::slug($profile->full_name) }}</span>
+                        <button 
+                            type="button" 
+                            @click="copy('npx {{ Str::slug($profile->full_name) }}')"
+                            class="p-1 rounded-md hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                            :title="copied ? 'Perintah disalin!' : 'Klik untuk menyalin'"
+                        >
+                            <template x-if="!copied">
+                                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                            </template>
+                            <template x-if="copied">
+                                <span class="text-[10px] text-emerald-400 font-sans font-semibold flex items-center space-x-1">
+                                    <i data-lucide="check" class="w-3 h-3"></i>
+                                    <span>Tersalin!</span>
+                                </span>
+                            </template>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Social Proof & Quick Links -->
@@ -160,14 +177,21 @@
                         </div>
                     </div>
 
-                    <!-- 5. Central Profile Photo Card with Gradient Border -->
-                    <div class="relative w-52 sm:w-60 aspect-square rounded-full sm:rounded-[2.5rem] p-1.5 bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-400 shadow-2xl shadow-indigo-500/25 group overflow-hidden">
-                        <div class="w-full h-full rounded-full sm:rounded-[2.2rem] overflow-hidden bg-slate-950 relative">
+                    <!-- 5. Central Profile Photo Card with Rotating Laser Beam & Pulsing Rings -->
+                    <div class="relative w-56 sm:w-64 aspect-square flex items-center justify-center group select-none">
+                        <!-- Direct Rotating Conic Laser Orbit around Photo Border -->
+                        <div class="absolute -inset-2 rounded-full p-[2.5px] bg-[conic-gradient(from_0deg,#6366f1,#a855f7,#38bdf8,#ec4899,#6366f1)] animate-laser-sweep opacity-95 laser-glow pointer-events-none"></div>
+                        
+                        <!-- Pulsing Outer Aura Ring -->
+                        <div class="absolute -inset-4 rounded-full border border-indigo-400/40 animate-pulse-ring pointer-events-none"></div>
+
+                        <!-- Inner Avatar Frame with 3D Hover Depth -->
+                        <div class="relative w-full h-full rounded-full p-1.5 bg-slate-950 border border-white/20 shadow-2xl shadow-indigo-500/30 overflow-hidden group-hover:scale-105 transition-transform duration-500">
                             @if($profile->avatar_path)
                                 <img 
                                     src="{{ asset('storage/' . $profile->avatar_path) }}" 
                                     alt="{{ $profile->full_name }}" 
-                                    class="w-full h-full object-cover rounded-full sm:rounded-[2.2rem] group-hover:scale-110 transition-transform duration-700 ease-out"
+                                    class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700 ease-out"
                                 >
                             @else
                                 <!-- High-Tech Graphic Card if no avatar -->
@@ -194,7 +218,7 @@
                             @endif
 
                             <!-- Subtle Interactive Sheen Layer on Hover -->
-                            <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500/15 via-transparent to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                            <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 via-transparent to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
                         </div>
                     </div>
 
@@ -226,24 +250,27 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="glass-card p-5 rounded-2xl">
+            <div class="glass-card spotlight-card card-hover-3d p-5 rounded-2xl reveal-on-scroll" x-data="counter({{ $githubStats['repos_count'] }})">
                 <div class="text-xs font-medium text-slate-500 dark:text-slate-400">Repositori Tersinkron</div>
-                <div class="text-3xl font-extrabold text-slate-900 dark:text-white mt-2">{{ $githubStats['repos_count'] }}</div>
-                <div class="text-[11px] text-indigo-500 font-mono mt-1">Status: Terhubung</div>
+                <div class="text-3xl font-extrabold text-slate-900 dark:text-white mt-2" x-text="count">0</div>
+                <div class="text-[11px] text-indigo-500 font-mono mt-1 flex items-center space-x-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Status: Terhubung</span>
+                </div>
             </div>
-            <div class="glass-card p-5 rounded-2xl">
+            <div class="glass-card spotlight-card card-hover-3d p-5 rounded-2xl reveal-on-scroll reveal-delay-1" x-data="counter({{ $githubStats['total_stars'] }})">
                 <div class="text-xs font-medium text-slate-500 dark:text-slate-400">Total GitHub Stars</div>
-                <div class="text-3xl font-extrabold text-amber-500 mt-2">{{ $githubStats['total_stars'] }}</div>
+                <div class="text-3xl font-extrabold text-amber-500 mt-2" x-text="count">0</div>
                 <div class="text-[11px] text-slate-400 font-mono mt-1">Stargazers total</div>
             </div>
-            <div class="glass-card p-5 rounded-2xl">
+            <div class="glass-card spotlight-card card-hover-3d p-5 rounded-2xl reveal-on-scroll reveal-delay-2" x-data="counter({{ $githubStats['total_forks'] }})">
                 <div class="text-xs font-medium text-slate-500 dark:text-slate-400">Total Forks</div>
-                <div class="text-3xl font-extrabold text-slate-900 dark:text-white mt-2">{{ $githubStats['total_forks'] }}</div>
+                <div class="text-3xl font-extrabold text-slate-900 dark:text-white mt-2" x-text="count">0</div>
                 <div class="text-[11px] text-slate-400 font-mono mt-1">Community forks</div>
             </div>
-            <div class="glass-card p-5 rounded-2xl">
+            <div class="glass-card spotlight-card card-hover-3d p-5 rounded-2xl reveal-on-scroll reveal-delay-3" x-data="counter({{ count($githubStats['languages']) }})">
                 <div class="text-xs font-medium text-slate-500 dark:text-slate-400">Bahasa Terdeteksi</div>
-                <div class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 mt-2">{{ count($githubStats['languages']) }}</div>
+                <div class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 mt-2" x-text="count">0</div>
                 <div class="text-[11px] text-slate-400 font-mono mt-1 truncate">
                     {{ implode(', ', array_slice($githubStats['languages'], 0, 3)) ?: 'PHP, JS, SQL' }}
                 </div>
@@ -277,8 +304,10 @@
             </div>
         @else
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($featuredProjects as $project)
-                    @include('components.project-card', ['project' => $project])
+                @foreach($featuredProjects as $idx => $project)
+                    <div class="reveal-on-scroll reveal-delay-{{ ($idx % 3) + 1 }}">
+                        @include('components.project-card', ['project' => $project])
+                    </div>
                 @endforeach
             </div>
         @endif
@@ -288,7 +317,7 @@
 <!-- Core Skills Overview -->
 <section class="py-20 bg-slate-100/50 dark:bg-slate-900/20 border-t border-slate-200/80 dark:border-slate-800/80">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-2xl mx-auto mb-16 space-y-2">
+        <div class="text-center max-w-2xl mx-auto mb-16 space-y-2 reveal-on-scroll">
             <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Stack & Teknologi</span>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Keahlian Teknis</h2>
             <p class="text-sm text-slate-600 dark:text-slate-400">
@@ -297,8 +326,8 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            @foreach($coreSkills as $skill)
-                <div class="glass-card p-6 rounded-2xl space-y-3 group hover:border-indigo-500/40 transition-all duration-300">
+            @foreach($coreSkills as $idx => $skill)
+                <div class="glass-card spotlight-card card-hover-3d p-6 rounded-2xl space-y-3 group hover:border-indigo-500/40 transition-all duration-300 reveal-on-scroll reveal-delay-{{ ($idx % 4) + 1 }}">
                     <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:scale-110 transition-transform">
                         <i data-lucide="{{ $skill->icon ?: 'code' }}" class="w-5 h-5"></i>
                     </div>
@@ -320,7 +349,7 @@
             @endforeach
         </div>
 
-        <div class="text-center mt-12">
+        <div class="text-center mt-12 reveal-on-scroll">
             <a href="{{ route('skills') }}" class="inline-flex items-center space-x-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
                 <span>Eksplorasi Seluruh Kategori Keahlian</span>
                 <i data-lucide="arrow-right" class="w-4 h-4"></i>
@@ -333,7 +362,7 @@
 <section class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            <div class="lg:col-span-5 space-y-4">
+            <div class="lg:col-span-5 space-y-4 reveal-on-scroll">
                 <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Perjalanan Karir</span>
                 <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Pengalaman Profesional</h2>
                 <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -348,12 +377,12 @@
             </div>
 
             <div class="lg:col-span-7 space-y-8">
-                @foreach($recentExperiences as $exp)
-                    <div class="relative pl-8 border-l-2 border-indigo-500/30 dark:border-indigo-500/20 pb-2">
+                @foreach($recentExperiences as $idx => $exp)
+                    <div class="relative pl-8 border-l-2 border-indigo-500/30 dark:border-indigo-500/20 pb-2 reveal-on-scroll reveal-delay-{{ ($idx % 2) + 1 }}">
                         <!-- Dot Indicator -->
                         <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-indigo-600 ring-4 ring-white dark:ring-[#0b0f19]"></span>
                         
-                        <div class="glass-card p-6 rounded-2xl space-y-2">
+                        <div class="glass-card spotlight-card card-hover-3d p-6 rounded-2xl space-y-2">
                             <div class="flex flex-wrap items-center justify-between gap-2">
                                 <h3 class="text-lg font-bold text-slate-900 dark:text-white">{{ $exp->role }}</h3>
                                 <span class="px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400">
@@ -377,7 +406,7 @@
 <!-- Call to Action Banner -->
 <section class="py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="rounded-3xl bg-gradient-to-r from-indigo-900/60 via-purple-900/40 to-slate-900/80 border border-indigo-500/30 p-8 sm:p-14 text-center space-y-6 relative overflow-hidden backdrop-blur-xl">
+        <div class="rounded-3xl bg-gradient-to-r from-indigo-900/60 via-purple-900/40 to-slate-900/80 border border-indigo-500/30 p-8 sm:p-14 text-center space-y-6 relative overflow-hidden backdrop-blur-xl reveal-on-scroll spotlight-card">
             <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Tertarik Bekerja Sama atau Membangun Solusi?</h2>
             <p class="text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
                 Saya terbuka untuk peluang kolaborasi proyek, perancangan arsitektur software, serta konsultasi teknis.

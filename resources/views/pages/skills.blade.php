@@ -30,7 +30,7 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach($skills as $skill)
-                            <div class="glass-card p-6 rounded-2xl space-y-3 group hover:border-indigo-500/50 hover:shadow-lg transition-all duration-300">
+                            <div class="glass-card spotlight-card card-hover-3d p-6 rounded-2xl space-y-3 group hover:border-indigo-500/50 hover:shadow-lg transition-all duration-300 reveal-on-scroll reveal-delay-{{ ($loop->index % 3) + 1 }}">
                                 <div class="flex items-start justify-between">
                                     <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:scale-110 transition-transform">
                                         <i data-lucide="{{ $skill->icon ?: 'code' }}" class="w-5 h-5"></i>

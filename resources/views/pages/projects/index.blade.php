@@ -107,8 +107,10 @@
             </div>
         @else
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($projects as $project)
-                    @include('components.project-card', ['project' => $project])
+                @foreach($projects as $idx => $project)
+                    <div class="reveal-on-scroll reveal-delay-{{ ($idx % 3) + 1 }}">
+                        @include('components.project-card', ['project' => $project])
+                    </div>
                 @endforeach
             </div>
 

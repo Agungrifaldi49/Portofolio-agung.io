@@ -7,7 +7,7 @@
         : ($project->github_full_name ? 'github.com/' . $project->github_full_name : Str::slug($project->title) . '.app');
 @endphp
 
-<article class="glass-card card-border-glow rounded-2xl overflow-hidden flex flex-col group hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/15 transition-all duration-500 relative">
+<article class="glass-card card-border-glow spotlight-card card-hover-3d rounded-2xl overflow-hidden flex flex-col group hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/20 transition-all duration-500 relative">
     <!-- Window / Index Browser Header & Cover Preview -->
     <div class="relative w-full overflow-hidden bg-slate-950 border-b border-slate-200/60 dark:border-slate-800/80 flex flex-col">
         
