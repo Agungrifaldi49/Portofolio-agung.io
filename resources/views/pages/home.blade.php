@@ -189,7 +189,7 @@
                         <div class="relative w-full h-full rounded-full p-1.5 bg-slate-950 border border-white/20 shadow-2xl shadow-indigo-500/30 overflow-hidden group-hover:scale-105 transition-transform duration-500">
                             @if($profile->avatar_path)
                                 <img 
-                                    src="{{ asset('storage/' . $profile->avatar_path) }}" 
+                                    src="{{ $profile->avatar_url ? $profile->avatar_url . '?v=' . optional($profile->updated_at)->timestamp : asset('storage/' . $profile->avatar_path) }}" 
                                     alt="{{ $profile->full_name }}" 
                                     class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700 ease-out"
                                 >

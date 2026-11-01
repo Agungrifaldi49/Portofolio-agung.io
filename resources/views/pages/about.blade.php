@@ -22,7 +22,7 @@
                 <div class="md:col-span-4 flex justify-center">
                     <div class="w-48 h-48 sm:w-56 sm:h-56 rounded-2xl overflow-hidden glass-card p-2 border border-slate-200 dark:border-slate-800 shadow-xl">
                         @if($profile->avatar_path)
-                            <img src="{{ asset('storage/' . $profile->avatar_path) }}" alt="{{ $profile->full_name }}" class="w-full h-full object-cover rounded-xl">
+                            <img src="{{ $profile->avatar_url ? $profile->avatar_url . '?v=' . optional($profile->updated_at)->timestamp : asset('storage/' . $profile->avatar_path) }}" alt="{{ $profile->full_name }}" class="w-full h-full object-cover rounded-xl">
                         @else
                             <div class="w-full h-full rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white text-4xl font-extrabold font-mono">
                                 {{ strtoupper(substr($profile->full_name, 0, 2)) }}

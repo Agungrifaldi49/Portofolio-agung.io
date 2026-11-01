@@ -93,5 +93,34 @@ class AdminSecurityTest extends TestCase
             'website_url' => 'https://alexpratama.dev',
         ]);
     }
+
+    public function test_admin_can_upload_avatar_and_serve_via_storage_fallback(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake('public');
+
+        $admin = User::where('email', 'admin@portfolio.local')->first();
+        $fakeFile = \Illuminate\Http\UploadedFile::fake()->create('my_avatar.jpg', 100, 'image/jpeg');
+
+        $response = $this->actingAs($admin)->put('/admin/profile', [
+            'full_name' => 'Alex Pratama',
+            'title' => 'Senior Full-Stack Developer',
+            'avatar' => $fakeFile,
+        ]);
+
+        $response->assertRedirect('/admin/profile');
+        $profile = \App\Models\ProfileSetting::current();
+        $this->assertNotNull($profile->avatar_path);
+        \Illuminate\Support\Facades\Storage::disk('public')->assertExists($profile->avatar_path);
+
+        // Test fallback route serves image directly
+        $storageRes = $this->get('/storage/' . $profile->avatar_path);
+        $storageRes->assertStatus(200);
+
+        // Test delete avatar
+        $deleteRes = $this->actingAs($admin)->delete('/admin/profile/avatar');
+        $deleteRes->assertRedirect();
+        $profile->refresh();
+        $this->assertNull($profile->avatar_path);
+    }
 }
 

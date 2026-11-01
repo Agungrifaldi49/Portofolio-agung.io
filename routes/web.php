@@ -12,6 +12,7 @@ use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\StorageController;
 
 // Admin Controllers
 use App\Http\Controllers\Admin\AuthController;
@@ -54,6 +55,10 @@ Route::post('/contact', [ContactController::class, 'submit'])
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
 
+// Storage File Serving Fallback (solves 404 image issues on cPanel/shared hosting without symlink)
+Route::get('/storage/{path}', [StorageController::class, 'show'])->where('path', '.*')->name('storage.local');
+Route::get('/public/storage/{path}', [StorageController::class, 'show'])->where('path', '.*')->name('storage.local.public');
+
 /*
 |--------------------------------------------------------------------------
 | Admin Authentication Routes
@@ -76,6 +81,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Profile Management
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile/avatar', [ProfileController::class, 'deleteAvatar'])->name('profile.avatar.delete');
         Route::delete('/profile/resume', [ProfileController::class, 'deleteResume'])->name('profile.resume.delete');
 
         // Projects Management

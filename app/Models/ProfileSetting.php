@@ -32,6 +32,38 @@ class ProfileSetting extends Model
         'available_for_hire' => 'boolean',
     ];
 
+    /**
+     * Get avatar full URL with cache busting support.
+     */
+    public function getAvatarUrlAttribute(): ?string
+    {
+        if (!$this->avatar_path) {
+            return null;
+        }
+
+        if (str_starts_with($this->avatar_path, 'http://') || str_starts_with($this->avatar_path, 'https://')) {
+            return $this->avatar_path;
+        }
+
+        return asset('storage/' . $this->avatar_path);
+    }
+
+    /**
+     * Get resume document URL.
+     */
+    public function getResumeUrlAttribute(): ?string
+    {
+        if (!$this->resume_path) {
+            return null;
+        }
+
+        if (str_starts_with($this->resume_path, 'http://') || str_starts_with($this->resume_path, 'https://')) {
+            return $this->resume_path;
+        }
+
+        return asset('storage/' . $this->resume_path);
+    }
+
     public static function current(): self
     {
         return static::firstOrCreate([], [

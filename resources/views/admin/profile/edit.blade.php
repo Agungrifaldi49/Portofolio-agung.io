@@ -151,19 +151,28 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Foto Profil -->
                     <div class="p-4 rounded-2xl bg-slate-50/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-3">
-                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">Foto Profil / Avatar (PNG, JPG, WebP max 2MB)</label>
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">Foto Profil / Avatar (PNG, JPG, WebP max 2MB)</label>
+                            @if($profile->avatar_path)
+                                <button type="button" onclick="if(confirm('Hapus foto profil?')) document.getElementById('delete-avatar-form').submit();" class="text-xs text-rose-500 hover:underline">Hapus Foto</button>
+                            @endif
+                        </div>
                         
                         <div class="flex items-center space-x-4">
-                            <div class="w-16 h-16 rounded-2xl overflow-hidden bg-slate-900 border border-slate-700 flex-shrink-0">
-                                @if($profile->avatar_path)
-                                    <img src="{{ asset('storage/' . $profile->avatar_path) }}" alt="Avatar" class="w-full h-full object-cover">
-                                @else
-                                    <div class="w-full h-full flex items-center justify-center text-[10px] text-slate-500 font-mono">No Image</div>
-                                @endif
+                            <div class="w-16 h-16 rounded-2xl overflow-hidden bg-slate-900 border border-slate-700 flex-shrink-0 relative group">
+                                <img id="avatar-preview-img" 
+                                     src="{{ $profile->avatar_url ? $profile->avatar_url . '?v=' . optional($profile->updated_at)->timestamp : '' }}" 
+                                     alt="Avatar" 
+                                     class="w-full h-full object-cover {{ $profile->avatar_path ? '' : 'hidden' }}"
+                                     onerror="this.classList.add('hidden'); document.getElementById('avatar-no-img').classList.remove('hidden');"
+                                >
+                                <div id="avatar-no-img" class="w-full h-full flex items-center justify-center text-[10px] text-slate-500 font-mono {{ $profile->avatar_path ? 'hidden' : '' }}">
+                                    No Image
+                                </div>
                             </div>
                             <div class="flex-grow space-y-1">
-                                <input type="file" name="avatar" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 dark:file:bg-indigo-950 file:text-indigo-600 dark:file:text-indigo-400 hover:file:bg-indigo-100 cursor-pointer">
-                                <span class="text-[11px] text-slate-400 block">Pilih berkas gambar untuk mengganti foto aktif.</span>
+                                <input type="file" id="avatar-input" name="avatar" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 dark:file:bg-indigo-950 file:text-indigo-600 dark:file:text-indigo-400 hover:file:bg-indigo-100 cursor-pointer">
+                                <span class="text-[11px] text-slate-400 block">Pilih berkas gambar untuk mengganti foto aktif. Pratinjau langsung akan tampil.</span>
                             </div>
                         </div>
                     </div>
@@ -210,6 +219,11 @@
 
         </form>
 
+        <form id="delete-avatar-form" method="POST" action="{{ route('admin.profile.avatar.delete') }}" class="hidden">
+            @csrf
+            @method('DELETE')
+        </form>
+
         <form id="delete-resume-form" method="POST" action="{{ route('admin.profile.resume.delete') }}" class="hidden">
             @csrf
             @method('DELETE')
@@ -217,4 +231,31 @@
     </div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const avatarInput = document.getElementById('avatar-input');
+    const avatarImg = document.getElementById('avatar-preview-img');
+    const avatarNoImg = document.getElementById('avatar-no-img');
+
+    if (avatarInput) {
+        avatarInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    if (avatarImg) {
+                        avatarImg.src = evt.target.result;
+                        avatarImg.classList.remove('hidden');
+                    }
+                    if (avatarNoImg) {
+                        avatarNoImg.classList.add('hidden');
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+</script>
 @endsection

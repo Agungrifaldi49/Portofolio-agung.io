@@ -43,6 +43,17 @@ class ProfileController extends Controller
             }
             $avatarPath = $request->file('avatar')->store('avatars', 'public');
             $profile->avatar_path = $avatarPath;
+
+            // Ensure physical copy in public/storage if symlinks are not available on shared hosting
+            try {
+                $pubDir = public_path('storage/avatars');
+                if (!is_dir($pubDir)) {
+                    @mkdir($pubDir, 0775, true);
+                }
+                @copy(storage_path('app/public/' . $avatarPath), public_path('storage/' . $avatarPath));
+            } catch (\Throwable $e) {
+                // Ignore copy errors
+            }
         }
 
         if ($request->hasFile('resume')) {
@@ -51,6 +62,16 @@ class ProfileController extends Controller
             }
             $resumePath = $request->file('resume')->store('documents', 'public');
             $profile->resume_path = $resumePath;
+
+            try {
+                $pubDir = public_path('storage/documents');
+                if (!is_dir($pubDir)) {
+                    @mkdir($pubDir, 0775, true);
+                }
+                @copy(storage_path('app/public/' . $resumePath), public_path('storage/' . $resumePath));
+            } catch (\Throwable $e) {
+                // Ignore copy errors
+            }
         }
 
         // Parse hero titles from comma or newline
@@ -79,6 +100,21 @@ class ProfileController extends Controller
         $profile->save();
 
         return redirect()->route('admin.profile.edit')->with('success', 'Profil profesional berhasil diperbarui.');
+    }
+
+    public function deleteAvatar()
+    {
+        $profile = ProfileSetting::current();
+        if ($profile->avatar_path) {
+            if (Storage::disk('public')->exists($profile->avatar_path)) {
+                Storage::disk('public')->delete($profile->avatar_path);
+            }
+            @unlink(public_path('storage/' . $profile->avatar_path));
+            $profile->avatar_path = null;
+            $profile->save();
+        }
+
+        return back()->with('success', 'Foto profil berhasil dihapus.');
     }
 
     public function deleteResume()
