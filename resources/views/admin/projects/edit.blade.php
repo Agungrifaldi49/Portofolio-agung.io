@@ -118,21 +118,52 @@
                 </div>
             </div>
 
-            <!-- Cover Image & Order -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-100 dark:border-slate-800">
-                <div class="space-y-1.5">
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">Gambar Sampul Proyek</label>
-                    @if($project->cover_image)
-                        <div class="flex items-center space-x-3 pb-2">
-                            <img src="{{ asset('storage/' . $project->cover_image) }}" alt="" class="w-16 h-10 object-cover rounded-lg border border-slate-700">
-                            <span class="text-xs text-slate-400">Gambar saat ini</span>
-                        </div>
+            <!-- Cover Image & Screenshot Management -->
+            <div class="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-800 dark:text-slate-200">Gambar Sampul / Screenshot Tampilan Index Proyek</label>
+                        <p class="text-[11px] text-slate-500">Unggah screenshot asli halaman website/dashboard proyek Anda atau gunakan otomatis dari GitHub/Live Demo.</p>
+                    </div>
+                    @if($project->cover_image_url)
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                            {{ $project->cover_image ? 'Custom Upload / URL' : 'Auto Generated' }}
+                        </span>
                     @endif
-                    <input type="file" name="cover_image" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 dark:file:bg-indigo-950 file:text-indigo-600 dark:file:text-indigo-400">
                 </div>
 
-                <div class="space-y-1.5">
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">Urutan Tampilan</label>
+                <!-- Current Preview Card -->
+                @if($project->cover_image_url)
+                    <div class="p-3 rounded-2xl bg-slate-900/60 border border-slate-800 max-w-md space-y-2">
+                        <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                            <span>Pratinjau Saat Ini:</span>
+                            @if($project->cover_image)
+                                <label class="inline-flex items-center space-x-1 text-rose-400 hover:text-rose-300 cursor-pointer">
+                                    <input type="checkbox" name="delete_cover_image" value="1" class="rounded text-rose-500">
+                                    <span>Hapus Gambar Kustom</span>
+                                </label>
+                            @endif
+                        </div>
+                        <div class="aspect-video rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+                            <img src="{{ $project->cover_image_url }}" alt="{{ $project->title }}" class="w-full h-full object-cover object-top">
+                        </div>
+                    </div>
+                @endif
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">Unggah File Screenshot (JPG, PNG, WebP max 3MB)</label>
+                        <input type="file" name="cover_image" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 dark:file:bg-indigo-950 file:text-indigo-600 dark:file:text-indigo-400">
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">Atau Masukkan URL Gambar Eksternal</label>
+                        <input type="url" name="cover_image_url" value="{{ old('cover_image_url', str_starts_with($project->cover_image ?? '', 'http') ? $project->cover_image : '') }}" placeholder="https://domain.com/screenshot.png" class="w-full px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 text-slate-900 dark:text-white">
+                    </div>
+                </div>
+
+                <div class="space-y-1.5 max-w-xs">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300">Urutan Tampilan (Sort Order)</label>
                     <input type="number" name="sort_order" value="{{ old('sort_order', $project->sort_order) }}" class="w-full px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 text-slate-900 dark:text-white">
                 </div>
             </div>

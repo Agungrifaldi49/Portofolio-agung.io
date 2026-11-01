@@ -166,7 +166,7 @@
             <div class="glass-card p-5 rounded-2xl">
                 <div class="text-xs font-medium text-slate-500 dark:text-slate-400">Repositori Tersinkron</div>
                 <div class="text-3xl font-extrabold text-slate-900 dark:text-white mt-2">{{ $githubStats['repos_count'] }}</div>
-                <div class="text-[11px] text-indigo-500 font-mono mt-1">Tag: portfolio</div>
+                <div class="text-[11px] text-indigo-500 font-mono mt-1">Status: Terhubung</div>
             </div>
             <div class="glass-card p-5 rounded-2xl">
                 <div class="text-xs font-medium text-slate-500 dark:text-slate-400">Total GitHub Stars</div>

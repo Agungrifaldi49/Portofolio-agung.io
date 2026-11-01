@@ -140,13 +140,22 @@ class ProjectController extends Controller
             'new_technologies' => ['nullable', 'string'],
             'key_features' => ['nullable', 'string'],
             'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:3072'],
+            'cover_image_url' => ['nullable', 'url', 'max:500'],
+            'delete_cover_image' => ['nullable', 'boolean'],
         ]);
 
-        if ($request->hasFile('cover_image')) {
-            if ($project->cover_image && Storage::disk('public')->exists($project->cover_image)) {
+        if ($request->boolean('delete_cover_image')) {
+            if ($project->cover_image && !str_starts_with($project->cover_image, 'http') && Storage::disk('public')->exists($project->cover_image)) {
+                Storage::disk('public')->delete($project->cover_image);
+            }
+            $project->cover_image = null;
+        } elseif ($request->hasFile('cover_image')) {
+            if ($project->cover_image && !str_starts_with($project->cover_image, 'http') && Storage::disk('public')->exists($project->cover_image)) {
                 Storage::disk('public')->delete($project->cover_image);
             }
             $project->cover_image = $request->file('cover_image')->store('projects', 'public');
+        } elseif ($request->filled('cover_image_url')) {
+            $project->cover_image = $request->input('cover_image_url');
         }
 
         if (!empty($validated['slug'])) {

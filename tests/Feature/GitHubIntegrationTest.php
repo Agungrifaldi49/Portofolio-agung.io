@@ -29,6 +29,8 @@ class GitHubIntegrationTest extends TestCase
         if ($this->originalTopic !== null) {
             SiteSetting::set('github_topic', $this->originalTopic);
         }
+        Project::whereIn('github_repo_id', [8881, 7771, 9991, 9992])->delete();
+        Project::whereIn('slug', ['test-repo-app', 'no-topic-repo', 'super-cool-app', 'random-experimental-repo'])->delete();
         parent::tearDown();
     }
     public function test_github_api_connection_check(): void
