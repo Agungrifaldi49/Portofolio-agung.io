@@ -71,6 +71,7 @@ class ProjectController extends Controller
             'new_technologies' => ['nullable', 'string'],
             'key_features' => ['nullable', 'string'],
             'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:3072'],
+            'cover_image_url' => ['nullable', 'url', 'max:500'],
         ]);
 
         $project = new Project();
@@ -99,6 +100,8 @@ class ProjectController extends Controller
 
         if ($request->hasFile('cover_image')) {
             $project->cover_image = $request->file('cover_image')->store('projects', 'public');
+        } elseif ($request->filled('cover_image_url')) {
+            $project->cover_image = $request->input('cover_image_url');
         }
 
         $project->save();
