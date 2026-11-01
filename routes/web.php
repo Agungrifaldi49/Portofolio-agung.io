@@ -78,6 +78,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/profile/resume', [ProfileController::class, 'deleteResume'])->name('profile.resume.delete');
 
         // Projects Management
+        Route::post('/projects/capture-screenshots', [AdminProjectController::class, 'captureScreenshots'])->name('projects.capture-screenshots');
         Route::resource('projects', AdminProjectController::class);
         Route::post('/projects/{project}/toggle-featured', [AdminProjectController::class, 'toggleFeatured'])->name('projects.toggle-featured');
         Route::post('/projects/{project}/toggle-publish', [AdminProjectController::class, 'togglePublish'])->name('projects.toggle-publish');

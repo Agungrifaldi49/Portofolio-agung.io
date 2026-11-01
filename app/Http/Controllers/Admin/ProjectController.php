@@ -12,6 +12,17 @@ use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
+    public function captureScreenshots()
+    {
+        try {
+            \Illuminate\Support\Facades\Artisan::call('portfolio:capture-screenshots');
+            $output = \Illuminate\Support\Facades\Artisan::output();
+            return back()->with('success', 'Screenshot tampilan asli halaman index proyek berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menangkap screenshot: ' . $e->getMessage());
+        }
+    }
+
     public function index(Request $request)
     {
         $query = Project::with(['category', 'technologies'])->orderBy('sort_order', 'asc')->orderBy('created_at', 'desc');

@@ -11,6 +11,13 @@
             <p class="text-xs text-slate-500">Kelola proyek manual dan repositori yang disinkronkan dari GitHub.</p>
         </div>
         <div class="flex items-center space-x-3">
+            <form method="POST" action="{{ route('admin.projects.capture-screenshots') }}">
+                @csrf
+                <button type="submit" title="Tangkap screenshot asli halaman index/dashboard dari proyek yang berjalan" class="px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs shadow-md transition-all flex items-center space-x-1.5">
+                    <i data-lucide="camera" class="w-3.5 h-3.5"></i>
+                    <span>Tangkap Screenshot Index</span>
+                </button>
+            </form>
             <a href="{{ route('admin.projects.create') }}" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md transition-all flex items-center space-x-1.5">
                 <i data-lucide="plus" class="w-4 h-4"></i>
                 <span>Tambah Proyek Manual</span>
