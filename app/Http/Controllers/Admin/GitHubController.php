@@ -27,7 +27,7 @@ class GitHubController extends Controller
 
         $syncLogs = GithubSyncLog::orderBy('created_at', 'desc')->take(10)->get();
 
-        $syncedProjects = Project::where('source_type', 'github')->get();
+        $syncedProjects = Project::where('source_type', 'github')->get()->keyBy('github_repo_id');
 
         return view('admin.github.index', compact(
             'username',
@@ -59,13 +59,68 @@ class GitHubController extends Controller
 
     public function triggerSync(GitHubSyncService $syncService)
     {
-        $result = $syncService->sync(triggeredBy: 'manual_admin', forceRefresh: true);
+        $result = $syncService->sync(triggeredBy: 'manual_admin', forceRefresh: true, ignoreTopicFilter: false);
 
         if ($result['success']) {
             return redirect()->route('admin.github.index')->with('success', $result['message']);
         }
 
         return redirect()->route('admin.github.index')->with('error', $result['message']);
+    }
+
+    public function syncAll(GitHubSyncService $syncService)
+    {
+        $result = $syncService->sync(triggeredBy: 'manual_admin', forceRefresh: true, ignoreTopicFilter: true);
+
+        if ($result['success']) {
+            return redirect()->route('admin.github.index')->with('success', $result['message']);
+        }
+
+        return redirect()->route('admin.github.index')->with('error', $result['message']);
+    }
+
+    public function toggleFeatured(Request $request, GitHubApiService $api, GitHubSyncService $syncService)
+    {
+        $repoId = (int) $request->input('repo_id');
+        $project = Project::where('github_repo_id', $repoId)->first();
+
+        if ($project) {
+            $project->is_featured = !$project->is_featured;
+            $project->save();
+            $status = $project->is_featured ? 'dijadikan Proyek Unggulan (tampil di Beranda)' : 'dihapus dari Proyek Unggulan';
+            return back()->with('success', "Proyek '{$project->title}' berhasil {$status}.");
+        }
+
+        // Jika belum diimpor ke database, tarik data repo dan simpan langsung sebagai unggulan
+        $reposData = $api->fetchPublicRepositories(forceRefresh: false);
+        $repo = collect($reposData['repos'] ?? [])->firstWhere('id', $repoId);
+
+        if (!$repo) {
+            return back()->with('error', 'Data repositori tidak ditemukan.');
+        }
+
+        $project = $syncService->upsertRepoProject($repo, isFeatured: true);
+        return back()->with('success', "Repositori '{$project->title}' berhasil diimpor dan langsung dijadikan Proyek Unggulan!");
+    }
+
+    public function importRepo(Request $request, GitHubApiService $api, GitHubSyncService $syncService)
+    {
+        $repoId = (int) $request->input('repo_id');
+        $isFeatured = $request->boolean('is_featured', false);
+
+        $reposData = $api->fetchPublicRepositories(forceRefresh: false);
+        $repo = collect($reposData['repos'] ?? [])->firstWhere('id', $repoId);
+
+        if (!$repo) {
+            return back()->with('error', 'Data repositori tidak ditemukan.');
+        }
+
+        $project = $syncService->upsertRepoProject($repo, isFeatured: $isFeatured);
+        $msg = $isFeatured 
+            ? "Repositori '{$project->title}' berhasil diimpor dan dijadikan Proyek Unggulan."
+            : "Repositori '{$project->title}' berhasil diimpor ke daftar proyek.";
+
+        return back()->with('success', $msg);
     }
 
     public function toggleExclude(Request $request)

@@ -104,6 +104,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/github', [AdminGitHubController::class, 'index'])->name('github.index');
         Route::post('/github/settings', [AdminGitHubController::class, 'updateSettings'])->name('github.settings');
         Route::post('/github/sync', [AdminGitHubController::class, 'triggerSync'])->name('github.sync');
+        Route::post('/github/sync-all', [AdminGitHubController::class, 'syncAll'])->name('github.sync-all');
+        Route::post('/github/toggle-featured', [AdminGitHubController::class, 'toggleFeatured'])->name('github.toggle-featured');
+        Route::post('/github/import-repo', [AdminGitHubController::class, 'importRepo'])->name('github.import-repo');
         Route::post('/github/toggle-exclude', [AdminGitHubController::class, 'toggleExclude'])->name('github.toggle-exclude');
 
         // Website Settings

@@ -11,6 +11,26 @@ use App\Models\SiteSetting;
 
 class GitHubIntegrationTest extends TestCase
 {
+    protected ?string $originalUsername;
+    protected ?string $originalTopic;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->originalUsername = SiteSetting::get('github_username');
+        $this->originalTopic = SiteSetting::get('github_topic');
+    }
+
+    protected function tearDown(): void
+    {
+        if ($this->originalUsername !== null) {
+            SiteSetting::set('github_username', $this->originalUsername);
+        }
+        if ($this->originalTopic !== null) {
+            SiteSetting::set('github_topic', $this->originalTopic);
+        }
+        parent::tearDown();
+    }
     public function test_github_api_connection_check(): void
     {
         Http::fake([
@@ -108,6 +128,75 @@ class GitHubIntegrationTest extends TestCase
         $this->assertDatabaseMissing('projects', [
             'github_repo_id' => 9992,
         ]);
+    }
+
+    public function test_github_sync_can_ignore_topic_filter(): void
+    {
+        SiteSetting::set('github_username', 'johndoe');
+        SiteSetting::set('github_topic', 'portfolio');
+
+        Http::fake([
+            'api.github.com/users/johndoe/repos*' => Http::response([
+                [
+                    'id' => 8881,
+                    'name' => 'no-topic-repo',
+                    'full_name' => 'johndoe/no-topic-repo',
+                    'description' => 'Repo without any topics.',
+                    'html_url' => 'https://github.com/johndoe/no-topic-repo',
+                    'homepage' => null,
+                    'language' => 'JavaScript',
+                    'topics' => [],
+                    'stargazers_count' => 5,
+                    'forks_count' => 1,
+                    'fork' => false,
+                    'private' => false,
+                    'created_at' => now()->toIso8601String(),
+                    'updated_at' => now()->toIso8601String(),
+                    'pushed_at' => now()->toIso8601String(),
+                ]
+            ], 200),
+        ]);
+
+        $api = new GitHubApiService();
+        $sync = new GitHubSyncService($api);
+        
+        // Sync with ignoreTopicFilter = true
+        $result = $sync->sync(triggeredBy: 'test', forceRefresh: true, ignoreTopicFilter: true);
+
+        $this->assertTrue($result['success']);
+        $this->assertEquals(1, $result['synced_count']);
+        $this->assertDatabaseHas('projects', [
+            'github_repo_id' => 8881,
+            'slug' => 'no-topic-repo',
+        ]);
+    }
+
+    public function test_admin_can_toggle_github_repo_featured(): void
+    {
+        $user = \App\Models\User::factory()->create();
+
+        $project = Project::create([
+            'title' => 'Test Repo App',
+            'slug' => 'test-repo-app',
+            'is_published' => true,
+            'is_featured' => false,
+            'source_type' => 'github',
+            'github_repo_id' => 7771,
+        ]);
+
+        $response = $this->actingAs($user)->post(route('admin.github.toggle-featured'), [
+            'repo_id' => 7771,
+        ]);
+
+        $response->assertRedirect();
+        $this->assertTrue($project->fresh()->is_featured);
+
+        // Toggle again
+        $this->actingAs($user)->post(route('admin.github.toggle-featured'), [
+            'repo_id' => 7771,
+        ]);
+
+        $this->assertFalse($project->fresh()->is_featured);
     }
 }
 
