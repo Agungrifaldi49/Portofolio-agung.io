@@ -50,3 +50,4 @@ class StorageController extends Controller
         abort(404);
     }
 }
+
